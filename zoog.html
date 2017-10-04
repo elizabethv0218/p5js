@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>p5js Template</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.3/p5.js"></script>
+    
+    <script>
+        function setup() {
+            createCanvas(800,600);
+            background(137,232,223)
+        }
+
+        function draw() {
+            //hair
+            stroke("brown")
+            fill("brown")
+            rect(320,140,160,100)
+            ellipse(400,140,160,160)
+            
+            //face
+            fill(255,255,190)
+            ellipse(400,140,120,120)
+            
+            //dress
+            stroke("pink")
+            fill("pink")
+            triangle(400,220,320,420,480,420)
+            
+            //eyes
+            fill(72,255,228)
+            stroke(0)
+            strokeWeight(2)
+            ellipse(380,120,10,10)
+            ellipse(420,120,10,10)
+            
+            //WOMEN sign
+            fill(255,215,0)
+            rect(300,460,200,50)
+            textAlign(CENTER)
+            textSize(40)
+            fill("red")
+            text("WOMEN",400,500)
+            
+            //legs
+            stroke(0)
+            line(380,424,380,460)
+            line(420,424,420,460)
+            
+            //arms
+            stroke("pink")
+            line(360,320,280,360)
+            line(440,320,520,360)
+            
+            //hygiene
+            text("Please wash your hands!",400,560)
+            
+            //mouth
+            stroke("red")
+            strokeWeight(5)
+            curve(380,160,390,180,410,180,420,160)
+            
+            //bow
+            stroke(232,87,116)
+            fill(232,87,116)
+            ellipse(340,80,40,40)
+            triangle(340,80,360,40,380,60)
+            triangle(340,80,300,100,320,120)
+            
+            //hands
+            fill(255,255,190)
+            ellipse(280,360,20,20)
+            ellipse(520,360,20,20)
+            
+            //buttons
+            fill(255)
+            ellipse(400,300,20,20)
+            ellipse(400,340,20,20)
+            ellipse(400,380,20,20)
+        }
+    </script>
+</head>
+
+<body>
+    <div id="code" class="container-fluid">
+        <script src="https://gist-it.appspot.com/github/elizabethv0218/p5js/blob/gh-pages/zoog.html?footer=0"></script>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        $(window).bind("load", function() {
+            $('#code').before($('#defaultCanvas0').remove());
+        });
+    </script>
+</body>
+
+
+</html>
