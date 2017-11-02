@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>p5js Template</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.3/p5.js"></script>
+    
+    <script>
+        var inky;       //blue ghost
+        var blinky;     //red ghost
+        var clyde;      //orange ghost
+        var pinky;      //pink ghost
+        var pacman;     //pacman
+        var ghostX;     //applies to the x values of all ghosts
+        var ghostY;     //only for inky
+        var ghostY1;    //only for blinky
+        var ghostY2;    //only for clyde
+        var ghostY3;    //only for pinky
+        var x;          //pacman x coordinate
+        var y;          //pacman y coordinate
+        
+        function preload() {
+            //the four ghosts
+            //BLUE
+            inky = loadImage("inky.png");
+            //RED
+            blinky = loadImage("blinky.png");
+            //ORANGE
+            clyde = loadImage("clyde.png");
+            //PINK
+            pinky = loadImage("pinky.png");
+            //pacman
+            pacman = loadImage("pacman.png");
+        }
+        
+        function setup() {
+            createCanvas(600,600);
+            ghostX=50;                  //starting x-value of ghosts
+            ghostY=random(100,500);     //ghosts will move at random...
+            ghostY1=random(100,500);    //...heights between y-values...
+            ghostY2=random(100,500);    //... 100 and 500
+            ghostY3=random(100,500);    //there had to be 4 of the same...
+                                        //...variables to avoid hiding any...
+                                        //...ghosts behind another
+            x=500;                      //pacman starts at x-value 500..
+            y=300;                      //...and y-value 300
+        }
+        
+        function draw() {
+            //will not leave past images as the ghosts translate
+            clear();
+            
+            //black background
+            background(0);
+            
+            //will make the x and y coordinates the center of the images
+            imageMode(CENTER);
+            
+            //pacman will appear at coordinates (500,300)
+            image(pacman,x,y,pacman.width/5,pacman.height/5);
+            
+            //The ghosts will move towards the right end of the canvas
+            //at a random height
+            image(inky,ghostX,ghostY,inky.width/7,inky.height/7);
+            image(blinky,ghostX,ghostY1,blinky.width/7,blinky.height/7);
+            image(clyde,ghostX,ghostY2,clyde.width/7,clyde.height/7);
+            image(pinky,ghostX,ghostY3,pinky.width/7,pinky.height/7);
+            
+            //the text will be present
+            //white text
+            fill(255);
+            //coordinates will be centered
+            textAlign(CENTER);
+            textSize(25);
+            text("Click the screen to start!",width/2,35);
+            text("Can you make it to the other end?",width/2,60);
+            text("Press the arrow keys to move!",width/2,565);
+            
+            //the translation of the ghosts
+            //will have the ghosts move to the right
+            ghostX=ghostX+2.5;
+            
+            //will have the ghosts reappear at the starting x-value
+            //but at a random height
+            if (ghostX==width) {
+                ghostX=50;
+                ghostY=random(100,500);
+                ghostY1=random(100,500);
+                ghostY2=random(100,500);
+                ghostY3=random(100,500);
+                
+                //if pacman doesn't reach the left side of the canvas before
+                //the ghosts reach the right side, pacman will return to its
+                //original starting position
+                x=500;
+                y=300;
+            }
+        }
+        
+        function keyPressed() {
+            //when a key is pressed, pacman will move accordingly by 10 pixels
+            if(keyIsDown(LEFT_ARROW)) {
+                x-=10;
+            }else if(keyIsDown(RIGHT_ARROW)) {
+                x+=10;
+            }else if(keyIsDown(UP_ARROW)) {
+                y-=10;
+            }else if(keyIsDown(DOWN_ARROW)) {
+                y+=10;
+            }
+            
+            //the code below allows pacman to move from the left side of...
+            //... the screen to the right side and vice versa
+            if(x<=0) {
+                x=width;
+            }else if(x>=600) {
+                x=0;
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <div id="code" class="container-fluid">
+        <script src="https://gist-it.appspot.com/github/elizabethv0218/p5js/blob/gh-pages/interaction-project.html?footer=0"></script>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        $(window).bind("load", function() {
+            $('#code').before($('#defaultCanvas0').remove());
+        });
+    </script>
+</body>
+
+
+</html>
