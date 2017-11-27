@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>p5js Template</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.3/p5.js"></script>
+    
+    <script>
+        //image variables
+        var bg;
+        var turkey;
+        var chicken;
+        var hen;
+        var rooster;
+        var medal;
+        //will record the user's score
+        var score;
+        //has the text move accross the canvas
+        var textX;
+        //represent the coordinates of the images
+        var turkeyX;
+        var turkeyY;
+        var chickenX;
+        var chickenY;
+        var henX;
+        var henY;
+        var roosterX;
+        var roosterY;
+        //will have the images move and bounce back
+        var dirX;
+        var dirY;
+        var dirX1;
+        var dirY1;
+        var dirX2;
+        var dirY2;
+        var dirX3;
+        var dirY3;
+        //these variables will be manipulated in order to
+        //have them disappear once the user earns 10 points
+        var circleR;
+        var turkeyW;
+        var turkeyH;
+        var chickenW;
+        var chickenH;
+        var henW;
+        var henH;
+        var roosterW;
+        var roosterH;
+        
+        function preload(){
+            //the images are ".png" because they have transparent backgrounds
+            bg = loadImage("bg.png");
+            turkey = loadImage("turkey.png");
+            chicken = loadImage("chicken.png");
+            hen = loadImage("hen.png");
+            rooster = loadImage("rooster.png");
+            medal = loadImage("medal.png");
+        }
+        
+        function setup() {
+            createCanvas(800,600);  //800 by 600 canvas
+            imageMode(CENTER);      //x & y coordinates will be the center of the image
+            score = 0;              //user's score will start at 0
+            textX = width;
+            turkeyX=100;
+            turkeyY=100;
+            chickenX=700;
+            chickenY=100;
+            henX=100;
+            henY=500;
+            roosterX=700;
+            roosterY=500;
+            dirX=1;
+            dirY=1;
+            dirX1=-1;
+            dirY1=1;
+            dirX2=1;
+            dirY2=-1;
+            dirX3=-1;
+            dirY3=-1;
+            circleR=30;
+            turkeyW=turkey.width/2;
+            turkeyH=turkey.height/2;
+            chickenW=chicken.width/3;
+            chickenH=chicken.height/3;
+            henW=hen.width/5;
+            henH=hen.height/5;
+            roosterW=rooster.width/14;
+            roosterH=rooster.height/14;
+        }
+
+        function draw() {
+            clear()
+            background(255,165,0);  //orange background
+            //will display the score
+            textAlign(CENTER);
+            fill(0);
+            textSize(50);
+            text("SCORE: " + score,width/2,50);
+            
+            //the game's mission will move across the canvas
+            textSize(50);
+            text("HELP US CAPTURE OUR THANKSGIVING DINNER!",textX,height/2);
+            textX--;
+            
+            //the directions will be displayed
+            textSize(10);
+            text("Try to get 10 points by clicking",width/2,185);
+            text("inside the turkey's circle",width/2,205);
+            
+            //the format is image(variable,x,y,width,height);
+            image(bg,width/2,height/2,bg.width/3,bg.height/3);
+            image(turkey,turkeyX,turkeyY,turkeyW,turkeyH);
+            image(chicken,chickenX,chickenY,chickenW,chickenH);
+            image(hen,henX,henY,henW,henH);
+            image(rooster,roosterX,roosterY,roosterW,roosterH);
+            
+            //the user will have to click within these ellipses
+            noStroke();
+            fill(255);
+            ellipse(turkeyX,turkeyY,circleR);
+            ellipse(chickenX-5,chickenY+5,circleR);
+            ellipse(henX+5,henY+5,circleR);
+            ellipse(roosterX-20,roosterY,circleR);
+            
+            //MAKES TURKEY MOVE
+            if(turkeyX>width-50||turkeyX<0){
+                dirX=dirX*-1;
+            }
+            if(turkeyY>height-50||turkeyY<0){
+                dirY=dirY * -1;
+            }
+            turkeyX+=dirX;
+            turkeyY+=dirY;
+            
+            //MAKES CHICKEN MOVE
+            if(chickenX>width-50||chickenX<0){
+                dirX1=dirX1*-1;
+            }
+            if(chickenY>height-50||chickenY<0){
+                dirY1=dirY1*-1;
+            }
+            chickenX+=dirX1;
+            chickenY+=dirY1;
+            
+            //MAKES HEN MOVE
+            if(henX>width-50||henX<0){
+                dirX2=dirX2*-1;
+            }
+            if(henY>height-50||henY<0){
+                dirY2=dirY2*-1;
+            }
+            henX+=dirX2;
+            henY+=dirY2;
+            
+            //MAKES ROOSTER MOVE
+            if(roosterX>width-50||roosterX<0){
+                dirX3=dirX3*-1;
+            }
+            if(roosterY>height-50||roosterY<0){
+                dirY3=dirY3*-1;
+            }
+            roosterX+=dirX3;
+            roosterY+=dirY3;
+            
+            //this code will be run if the user gets 10 points
+            if(score==10){
+                turkeyW=turkey.width/1000;
+                turkeyH=turkey.height/1000;
+                chickenW=chicken.width/1000;
+                chickenH=chicken.height/1000;
+                henW=hen.width/1000;
+                henH=hen.height/1000;
+                roosterW=rooster.width/10000;
+                roosterH=rooster.height/10000;
+                circleR=0;
+                image(medal,width/2,height/2-40,medal.width,medal.height);
+                fill(0);
+                textSize(50);
+                text("YOU HAVE WON!",width/2,height-75);
+                text("REFRESH TO PLAY AGAIN!",width/2,height-25);
+            }  
+        }
+            
+        function mouseClicked(){
+            //clicking on the turkey earns one point
+            if(mouseX>turkeyX-15&&mouseX<turkeyX+15&&mouseY>turkeyY-15&&mouseY<turkeyY+15){
+                score+=1;
+                console.log(score);
+                //will make the birds move faster
+                dirX*=1.5;
+                dirY*=1.5;
+                dirX1*=1.5;
+                dirY1*=1.5;
+                dirX2*=1.5;
+                dirY2*=1.5;
+                dirX3*=1.5;
+                dirY3*=1.5;
+            //clicking the other birds removes two points
+            }else if(mouseX>chickenX-15&&mouseX<chickenX+15&&mouseY>chickenY-15&&mouseY<chickenY+15){
+                score-=2;
+                console.log(score);
+            }else if(mouseX>henX-15&&mouseX<henX+15&&mouseY>henY-15&&mouseY<henY+15){
+                score-=2;
+                console.log(score);
+            }else if(mouseX>roosterX-15&&mouseX<roosterX+15&&mouseY>roosterY-15&&mouseY<roosterY+15){
+                score-=2;
+                console.log(score);
+            //clicking anything else (i.e. canvas) will remove one point
+            }else{
+                score-=1;
+                console.log(score);
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div id="code" class="container-fluid">
+        <script src="https://gist-it.appspot.com/github/elizabethv0218/p5js/blob/master/conditionals-project.html?footer=0"></script>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        $(window).bind("load", function() {
+            $('#code').before($('#defaultCanvas0').remove());
+        });
+    </script>
+</body>
+
+</html>
