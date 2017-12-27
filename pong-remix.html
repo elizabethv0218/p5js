@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>Pong</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.13/p5.js"></script>
+    <script>
+        var ballX;
+        var ballY;
+        var ballSpeedX = 0;     //the ball will not move unless the...
+        var ballSpeedY = 0;     //screen is clicked or SPACE is pressed
+        var paddleHeight = 30;
+        var paddleWidth = 200;
+        var score=0;            //user's score starts at 0
+        var heart;
+        var heartW1, heartW2, heartW3, heartW4, heartW5;
+        var heartH1, heartH2, heartH3, heartH4, heartH5;
+        var livescore=6;        //helps indicate when a heart should disappear
+        
+        /*the two variables below will change the position
+          of the instructions once the game begins*/
+        var boxX=200;
+        var textX;
+        
+        //preload() will load the heart images to be accessible in other functions
+        function preload(){
+            heart = loadImage("heartpixel.png");
+        }
+        
+        function setup() {
+            createCanvas(800,600);
+            noCursor();                 //the mouse will not be visible when playing
+            ballX = random(width);      //ball will appear anywhere horizontally and...
+            ballY = random(height/2);   //anywhere on the top half of the screen
+            imageMode(CENTER);          //x and y coordinates will represent the center of an image
+            
+            //the heart images will be modified to become one fourth of their original size
+            heartW1=heart.width/4; heartW2=heart.width/4; heartW3=heart.width/4; heartW4=heart.width/4; heartW5=heart.width/4;
+            heartH1=heart.height/4; heartH2=heart.height/4; heartH3=heart.height/4; heartH4=heart.height/4; heartH5=heart.height/4;
+            textX=width/2;              //the text of the instructions will be centered horizontally in the instructions
+        }
+
+        //draw() will execute the pong game as defined by the called functions
+        function draw() {
+            background(189,255,177); //the background is sea-green
+            moveBall();
+            checkCollide();
+            drawPaddle();
+            drawBall();
+            scoreboard();
+            lives();
+            instructions();
+        }
+        
+        /*moveBall() will have the ball move and
+          and its speed recorded in the console*/
+        function moveBall() {
+            ballX = ballX + ballSpeedX;
+            ballY = ballY + ballSpeedY;
+            console.log("ballSpeedX: " + ballSpeedX + 
+                        ", ballSpeedY: " + ballSpeedY);
+        }
+
+        /*checkCollide() will make sure the ball
+          bounces into a new direction when...*/
+        function checkCollide() {
+            //...the ball touches the left and right edges of the screen,
+            if (ballX < 0 || ballX > width) {
+                ballSpeedX = ballSpeedX * -1;
+            } 
+            //...the ball touches top edge of the screen,
+            if (ballY < 0) {
+                ballSpeedY = ballSpeedY * -1;
+            }
+            //...and when the ball touches the top of the paddle.
+            if (ballY > height - paddleHeight) {
+                if (ballX > mouseX && ballX < mouseX + 200) {
+                    ballSpeedY = ballSpeedY * -1.1;   
+                    paddleWidth-=10;    //the paddle will get shorter
+                    score+=1;           //the user will earn one point
+                }else{
+                    /*When the ball touches the bottom of
+                      the screen, the user will lose a life.
+                      The user can continue playing unless
+                      their lives are all gone*/
+                    if(livescore!=0){
+                        ballSpeedY = ballSpeedY * -1.1;
+                        livescore-=1;
+                    }
+                }
+            }
+        }
+        
+        //drawBall() will display the colorful ball at a random location at the start
+        //(reminder: anywhere horizontally and at the top half of the screen)
+        function drawBall() {
+            noStroke();
+            fill(random(255),random(255),random(255));
+            ellipse(ballX, ballY, 20, 20);
+        }
+
+        /*drawPaddle() will display the paddle as a rectangle
+          and will follow the mouse to ONLY move horizontally
+          across the screen at the bottom of the screen*/
+        function drawPaddle() {
+            strokeWeight(4);
+            fill(255);
+            rect(mouseX, height - paddleHeight - 4, paddleWidth, paddleHeight);
+        } 
+      
+        /*When the mouse is pressed, the user can begin playing & the
+          ball will begin to move. The instructions will disappear*/
+        function mousePressed(){
+          if(ballSpeedX==0){
+            ballSpeedX = 5;
+            ballSpeedY = 5;
+            boxX=width+10;
+            textX=width+150;
+          }
+        }
+        
+        //keyPressed() will let the user pause and play
+        function keyPressed(){
+            /*if the user presses the SPACE key while they 
+              are playing, the ball will stop moving*/
+            if(keyCode===32&&ballSpeedX==5){
+                ballSpeedX=0;
+                ballSpeedY=0;
+            /*if the user presses the SPACE key again, the ball will move again 
+              at a random direction. Pressing SPACE can also start the game.*/
+            }else if(keyCode===32&&ballSpeedX==0){
+                ballSpeedX=5;
+                ballSpeedY=5;
+                boxX=width+5;
+                textX=width+150;
+            }
+        }
+        
+        //scoreboard() will display the user's score at the top left corner
+        function scoreboard(){
+            textAlign(CENTER);
+            fill(0);
+            textSize(50);
+            text("SCORE: " + score,200,80);
+        }
+        
+        //lives() will give the user 5 chances to keep playing
+        function lives(){
+            /*5 hearts will appear and represent
+              the user's lives in the game*/
+            image(heart,420,60,heartW1,heartH1);
+            image(heart,490,60,heartW2,heartH2);
+            image(heart,560,60,heartW3,heartH3);
+            image(heart,630,60,heartW4,heartH4);
+            image(heart,700,60,heartW5,heartH5);
+            
+            /*Everytime the ball hits the bottom of the screen,
+              a heart will disappear. The user starts with 5*/
+            if(livescore==5){           //4 lives/hearts left
+                heartW5=heart.width/0; 
+                heartH5=heart.height/0;
+            }else if(livescore==4){     //3 lives/hearts left
+                heartW4=heart.width/0; 
+                heartH4=heart.height/0;
+            }else if(livescore==3){     //2 lives/hearts left
+                heartW3=heart.width/0; 
+                heartH3=heart.height/0;
+            }else if(livescore==2){     //1 life/heart left
+                heartW2=heart.width/0; 
+                heartH2=heart.height/0;
+            }else if(livescore==1){     //last life will be lost
+                heartW1=heart.width/0;
+                heartH1=heart.width/0;
+                
+            /*When the ball hits the bottom for the 6th time, the user will have wasted all
+              their lives. Everything will disappear off the screen except the scoreboard, the
+              background will turn purple & the game will indicate that the user has lost*/
+            }else if(livescore==0){
+                background(198,84,232);
+                textAlign(CENTER);
+                fill(0);
+                text("GAME OVER!", width / 2, height / 2);
+                scoreboard();
+                noLoop();
+            }
+        }
+        
+        /*instructions() will diplay the directions to follow for the game. They will move off 
+          the screen when the mouse is clicked or the SPACE key is pressed at the beginning*/
+        function instructions(){
+            //blue rectangle
+            fill(128,206,232);
+            stroke(0);
+            rect(boxX,195,400,200,50,50,50,50);
+            //text "HOW TO PLAY" will be bold and red
+            strokeWeight(2);
+            stroke(255,0,0);
+            fill(255,0,0);
+            textSize(35);
+            text("HOW TO PLAY",textX,height/2-60);
+            //text of directions not be bold, but still red
+            noStroke();
+            textSize(25);
+            text("Move your mouse to hit",textX,height/2-15);
+            text("Press SPACE to pause",textX,height/2+30);
+            text("Click to start!",textX,height/2+75);
+        }
+        
+    </script>
+</head>
+
+<body>
+    <div id="code" class="container-fluid">
+        <script src="https://gist-it.appspot.com/github/elizabethv0218/p5js/blob/master/pong-remix.html?footer=0"></script>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        $(window).bind("load", function() {
+            $('#code').before($('#defaultCanvas0').remove());
+        });
+    </script>
+</body>
+
+</html>
