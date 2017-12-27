@@ -106,17 +106,6 @@
             strokeWeight(4);
             fill(255);
             rect(mouseX, height - paddleHeight - 4, paddleWidth, paddleHeight);
-        } 
-      
-        /*When the mouse is pressed, the user can begin playing & the
-          ball will begin to move. The instructions will disappear*/
-        function mousePressed(){
-          if(ballSpeedX==0){
-            ballSpeedX = 5;
-            ballSpeedY = 5;
-            boxX=width+10;
-            textX=width+150;
-          }
         }
         
         //keyPressed() will let the user pause and play
