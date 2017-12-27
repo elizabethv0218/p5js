@@ -112,7 +112,7 @@
         function keyPressed(){
             /*if the user presses the SPACE key while they 
               are playing, the ball will stop moving*/
-            if(keyCode===32&&ballSpeedX==5){
+            if(keyCode===32&&ballSpeedX==5||ballSpeedX==-5){
                 ballSpeedX=0;
                 ballSpeedY=0;
             /*if the user presses the SPACE key again, the ball will move again 
@@ -194,7 +194,7 @@
             textSize(25);
             text("Move your mouse to hit",textX,height/2-15);
             text("Press SPACE to pause",textX,height/2+30);
-            text("Press SPACE to start!",textX,height/2+75);
+            text("Click the screen then press SPACE to start!",textX,height/2+75);
         }
         
     </script>
