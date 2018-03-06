@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <title>p5js Template</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.13/p5.js"></script>
+    <script>
+      var timer = 1;
+      var diameter; //applies to the given circle only
+      var a = 0; //opacity value of the given circle
+      var aTimer = 0; //opacity value of the countdown timer
+      var dirX; //applies to everything in the directions function
+      var userDia; //applies to the user's circle only
+      
+      function setup() {
+        createCanvas(600,600);
+        //coordinates of the rectangles and text will be their centers
+        textAlign(CENTER);
+        rectMode(CENTER);
+        diameter = random(width-100); //will give the given circle a random siz
+        dirX = width/2;
+        userDia = 100; //user's circle will have a diameter of 100
+      }
+      
+      function draw() {
+        background(0); //black background when playing
+        countdown();  //countdown timer begins when the given circle appears
+        ranCircle();  //given circle appears after the directions vanish
+        directions(); //directions will be presented at the beginning
+      } 
+      
+      //countdown timer
+      function countdown(){
+        textSize(50);
+        fill(255,255,255,aTimer); 
+        text("Timer: " + timer, 110, 60);
+        //uses frameCount to record when a second has passes
+        if(frameCount % 60 == 0 && timer > 0){
+          timer--; //will make the timer count down
+        }
+        //user has 5 seconds to memorize the given circle
+        if(timer<=15){
+          a=0; //given circle will be removed
+          userCircle(); //user's circle will appear; diameter of 100
+        }
+      }
+      
+      function directions(){
+        //rectangle
+        fill(200);
+        noStroke();
+        rect(dirX,height/2,440,300,50,50,50,50);
+        
+        //instructions for the game
+        fill(0);
+        textSize(30);
+        text("DIRECTIONS",dirX,height/2-100);
+        textSize(25);
+        text("Set up the Makey-Makey kit",dirX,height/2-50);
+        text("Map your circle onto the given circle ",dirX,height/2-10);
+        text("5 seconds to memorize; 15 to map",dirX,height/2+30);
+        text("Click mouse & press SPACE to begin",dirX,height/2+70);
+        textSize(35);
+        text("Hustle and Good Luck!",dirX,height/2+120);
+      }
+      
+      function ranCircle(){
+        noFill();
+        stroke(255,255,255,a);
+        ellipse(width/2,height/2,diameter,diameter); //random sized circle will appear
+      }
+      
+      function userCircle(){
+        noFill();
+        stroke(255); 
+        ellipse(width/2,height/2,userDia,userDia);
+        
+        //up arrow will make their circle bigger
+        if(keyIsPressed==true&&keyCode==UP_ARROW){
+          userDia++;
+        }
+        //down arrow will make their circle smaller
+        if(keyIsPressed==true&&keyCode==DOWN_ARROW){
+          userDia--;
+        }
+        /*left arrow will automatically make the timer equal 0
+          if the user does not want to keep waiting*/
+        if(keyIsPressed==true&&keyCode==LEFT_ARROW){
+          timer=0;
+        }
+        
+        //if the user's circle is the same as the given circle, the user wins
+        if(timer==0&&userDia==diameter){
+          background(255);
+          fill(0);
+          text("YOU WIN",width/2,height/2);
+        //if the user's circle is not the same as the given circle, the user loses
+        }else if(timer==0&&userDia!=diameter){ 
+          background(255);
+          fill(0); 
+          text("YOU LOSE",width/2,height/2); 
+        }
+      }
+      
+      //the user must press SPACE to begin the game
+      function keyPressed(){
+        if(keyCode===32 && dirX==width/2){
+          dirX=width*2;
+          a=255;
+          timer=20;
+          aTimer=255;
+        }else{
+          return false; //prevents the screen from scrolling when the game is played
+        }
+      }
+    </script>
+</head>
+
+<body>
+    <div id="code" class="container-fluid">
+        <script src="https://gist-it.appspot.com/github/elizabethv0218/p5js/blob/master/makey-makey.html?footer=0"></script>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        $(window).bind("load", function() {
+            $('#code').before($('#defaultCanvas0').remove());
+        });
+    </script>
+</body>
+
+</html>
